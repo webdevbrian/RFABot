@@ -1,4 +1,5 @@
 (function() {
+  var RastaFortuneSvc = {};
   var Command, RoomHelper, User, afkCheck, afksCommand, allAfksCommand, announceCurate, antispam, apiHooks, avgVoteRatioCommand, badQualityCommand, beggar, chatCommandDispatcher, chatUniversals, cmds, commandsCommand, cookieCommand, data, dieCommand, disconnectLookupCommand, downloadCommand, forceSkipCommand, handleNewSong, handleUserJoin, handleUserLeave, handleVote, hook, initEnvironment, initHooks, initialize, lockCommand, msToStr, newSongsCommand, overplayedCommand, popCommand, populateUserData, pupOnline, pushCommand, reloadCommand, resetAfkCommand, roomHelpCommand, rulesCommand, settings, skipCommand, sourceCommand, statusCommand, swapCommand, themeCommand, undoHooks, unhook, unhookCommand, unlockCommand, updateVotes, uservoiceCommand, voteRatioCommand, whyMehCommand, whyWootCommand, wootCommand, _ref, _ref1, _ref10, _ref11, _ref12, _ref13, _ref14, _ref15, _ref16, _ref17, _ref18, _ref19, _ref2, _ref20, _ref21, _ref22, _ref23, _ref24, _ref25, _ref26, _ref27, _ref28, _ref29, _ref3, _ref30, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
@@ -64,7 +65,7 @@
       {
         interval: 15,
         offset: 0,
-        msg: "I'm a bot!"
+        msg: "Don't forget to jump in the wait list!"
       }
     ];
 
@@ -365,6 +366,7 @@
     initHooks();
     data.startup();
     data.newSong();
+    RastaFortuneSvc.init();
     return data.startAfkInterval();
   };
 
@@ -1581,7 +1583,7 @@
   };
 
   announceCurate = function(obj) {
-    return API.sendChat("/em: " + obj.user.username + " loves this song!");
+    return API.sendChat("/em: " + obj.user.username + " grabbed this song!");
   };
 
   handleUserJoin = function(user) {
@@ -1670,6 +1672,7 @@
   chatUniversals = function(chat) {
     data.activity(chat);
     antispam(chat);
+    RastaFortuneSvc.checkFortuneRequest(chat);
     return beggar(chat);
   };
 
@@ -1724,6 +1727,65 @@
       _results.push(unhook(pair['event'], pair['callback']));
     }
     return _results;
+  };
+
+  RastaFortuneSvc = {
+    _fortuneLen: 40,
+    _fortunes: new Array(),
+    init: function() {
+      this._fortunes[0] = "Everyting will come yuh way mon.";
+      this._fortunes[1] = "Now is di time to try someting new.";
+      this._fortunes[2] = "A handful of payshense is wort more dan a bushel of brains.";
+      this._fortunes[3] = "Yuh hav an active mind and a keen imagination.";
+      this._fortunes[4] = "Don't let doubt and suspicion bar yuh pragress.";
+      this._fortunes[5] = "Yuh will mek a faatune wit yuh friend.";
+      this._fortunes[6] = "Yuh emotional nature is strong and sensitive.";
+      this._fortunes[7] = "Yuh will find a treasure at dis web site.";
+      this._fortunes[8] = "Sing and rejoice mon, faatune is smiling pon yuh.";
+      this._fortunes[9] = "Yuh have remarkable power which yuh are not using.";
+      this._fortunes[10] = "Yuh venture will be a success.";
+      this._fortunes[11] = "Accept di next proposition yuh hear.";
+      this._fortunes[12] = "A cheerful letta or message is pon its way to yuh.";
+      this._fortunes[13] = "Yuh are just beginning to liv mon.";
+      this._fortunes[14] = "Love is a rolla coasta, ee hav ups and downs.";
+      this._fortunes[15] = "Yuh will find a treasure at dis web site.";
+      this._fortunes[16] = "Di great joy in life is doing what people seh yuh caa duh.";
+      this._fortunes[17] = "Yuh are a bundle of energy, always on di go.";
+      this._fortunes[18] = "Yuh dearest wish will come true.";
+      this._fortunes[19] = "Yuh have at yuh command di wisdom of di ages - JAH Rastafari!";
+      this._fortunes[20] = "Yuh will travel to many places. Guh check out Jamaica mon.";
+      this._fortunes[21] = "Yuh careful & systematic in yuh business arrangements. Yuh mus ee smart.";
+      this._fortunes[22] = "To one who waits, a moment seems a year.";
+      this._fortunes[23] = "Yuh wisdom has kept yuh far away from danger.";
+      this._fortunes[24] = "Yuh will have a fine capacity fi di enjoyment af life.";
+      this._fortunes[25] = "Yuh will reach di height of success in whatever yuh duh.";
+      this._fortunes[26] = "Consolidate radder dan expand yuh business in di near future.";
+      this._fortunes[27] = "Yuh principles mean more to yuh dan any money ar success.";
+      this._fortunes[28] = "Yuh have a deep appreciation of di arts and music - especially reggae, yuh knoa wha mi a seh.";
+      this._fortunes[29] = "Yuh display di wonderful traits of charm and courtesy.";
+      this._fortunes[30] = "Yuh talented in many ways.";
+      this._fortunes[31] = "Good faatune awaits yuh at di end of di day. Chill out and smoke a spliff.";
+      this._fortunes[32] = "Treat everyone as a bredren ar a daughta.";
+      this._fortunes[33] = "Yuh are di guiding star of his Excellence. Haile Selassie I, JAH, RASTAFARI!";
+      this._fortunes[34] = "Yuh are open and honest in yuh philosophy of love.";
+      this._fortunes[35] = "Simplicity should be yuh theme in dress.";
+      this._fortunes[36] = "Yuh will be faatunate in di opportunities presented to yuh from JAH.";
+      this._fortunes[37] = "Yuh can open doors with yuh charm and patience.";
+      this._fortunes[38] = "Yuh talents will be recognized and suitably rewarded.";
+      this._fortunes[39] = "Don't be hasty, prosperity will knock on yuh door soon. Light up a splif and drink some irish moss.";
+    },
+    checkFortuneRequest: function (chatData) {
+      if (chatData.message.indexOf("!fortune") != -1) {
+        var now = new Date();
+        var seed = now.getTime() % 0xffffffff;
+
+        seed = (0x015a4e35 * seed) % 0x7fffffff;
+        var random = (seed >> 16) % this._fortuneLen;
+
+        var fortune = this._fortunes[random];
+        API.sendChat(chatData.from + ": " + fortune);
+      }
+    }
   };
 
   initialize();
