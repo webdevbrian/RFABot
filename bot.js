@@ -1,12 +1,12 @@
-(function() {
+(function () {
   var RastaFortuneSvc = {};
-  var Command, RoomHelper, User, afkCheck, afksCommand, allAfksCommand, announceCurate, antispam, apiHooks, avgVoteRatioCommand, badQualityCommand, beggar, chatCommandDispatcher, chatUniversals, cmds, commandsCommand, cookieCommand, data, dieCommand, disconnectLookupCommand, downloadCommand, forceSkipCommand, handleNewSong, handleUserJoin, handleUserLeave, handleVote, hook, initEnvironment, initHooks, initialize, lockCommand, msToStr, newSongsCommand, overplayedCommand, popCommand, populateUserData, pupOnline, pushCommand, reloadCommand, resetAfkCommand, roomHelpCommand, rulesCommand, settings, skipCommand, sourceCommand, statusCommand, swapCommand, themeCommand, undoHooks, unhook, unhookCommand, unlockCommand, updateVotes, uservoiceCommand, voteRatioCommand, whyMehCommand, whyWootCommand, wootCommand, _ref, _ref1, _ref10, _ref11, _ref12, _ref13, _ref14, _ref15, _ref16, _ref17, _ref18, _ref19, _ref2, _ref20, _ref21, _ref22, _ref23, _ref24, _ref25, _ref26, _ref27, _ref28, _ref29, _ref3, _ref30, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+  var Command, RoomHelper, User, afkCheck, allAfksCommand, announceCurate, antispam, apiHooks, avgVoteRatioCommand, badQualityCommand, beggar, chatCommandDispatcher, chatUniversals, cmds, commandsCommand, cookieCommand, data, dieCommand, disconnectLookupCommand, downloadCommand, forceSkipCommand, handleNewSong, handleUserJoin, handleUserLeave, handleVote, hook, initEnvironment, initHooks, initialize, lockCommand, msToStr, newSongsCommand, overplayedCommand, popCommand, populateUserData, pupOnline, pushCommand, reloadCommand, resetAfkCommand, roomHelpCommand, rulesCommand, settings, skipCommand, sourceCommand, statusCommand, swapCommand, themeCommand, undoHooks, unhook, unhookCommand, unlockCommand, updateVotes, uservoiceCommand, voteRatioCommand, whyMehCommand, whyWootCommand, wootCommand, _ref, _ref1, _ref10, _ref11, _ref12, _ref13, _ref14, _ref15, _ref16, _ref17, _ref18, _ref19, _ref2, _ref20, _ref21, _ref22, _ref23, _ref24, _ref25, _ref26, _ref27, _ref28, _ref29, _ref3, _ref30, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, fortuneCommand,
+    __bind = function (fn, me) { return function () { return fn.apply(me, arguments); }; },
+    __indexOf = [].indexOf || function (item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+    __extends = function (child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  settings = (function() {
+  settings = (function () {
     function settings() {
       this.implode = __bind(this.implode, this);
       this.intervalMessages = __bind(this.intervalMessages, this);
@@ -71,16 +71,16 @@
 
     settings.prototype.songCount = 0;
 
-    settings.prototype.startup = function() {
+    settings.prototype.startup = function () {
       this.launchTime = new Date();
       return this.roomUrlPath = this.getRoomUrlPath();
     };
 
-    settings.prototype.getRoomUrlPath = function() {
+    settings.prototype.getRoomUrlPath = function () {
       return window.location.pathname.replace(/\//g, '');
     };
 
-    settings.prototype.newSong = function() {
+    settings.prototype.newSong = function () {
       this.totalVotingData.woots += this.currentwoots;
       this.totalVotingData.mehs += this.currentmehs;
       this.totalVotingData.curates += this.currentcurates;
@@ -93,7 +93,7 @@
       }
     };
 
-    settings.prototype.userJoin = function(u) {
+    settings.prototype.userJoin = function (u) {
       var userIds, _ref;
       userIds = Object.keys(this.users);
       if (_ref = u.id, __indexOf.call(userIds, _ref) >= 0) {
@@ -104,7 +104,7 @@
       }
     };
 
-    settings.prototype.setInternalWaitlist = function() {
+    settings.prototype.setInternalWaitlist = function () {
       var boothWaitlist, fullWaitList, lineWaitList;
       boothWaitlist = API.getDJ();
       lineWaitList = API.getWaitList();
@@ -112,17 +112,17 @@
       return this.internalWaitlist = fullWaitList;
     };
 
-    settings.prototype.activity = function(obj) {
+    settings.prototype.activity = function (obj) {
       if (obj.type === 'message') {
         return this.users[obj.fromID].updateActivity();
       }
     };
 
-    settings.prototype.startAfkInterval = function() {
+    settings.prototype.startAfkInterval = function () {
       return this.afkInterval = setInterval(afkCheck, 2000);
     };
 
-    settings.prototype.intervalMessages = function() {
+    settings.prototype.intervalMessages = function () {
       var msg, _i, _len, _ref, _results;
       this.songCount++;
       _ref = this.songIntervalMessages;
@@ -138,7 +138,7 @@
       return _results;
     };
 
-    settings.prototype.implode = function() {
+    settings.prototype.implode = function () {
       var item, val;
       for (item in this) {
         val = this[item];
@@ -149,7 +149,7 @@
       return clearInterval(this.afkInterval);
     };
 
-    settings.prototype.lockBooth = function(callback) {
+    settings.prototype.lockBooth = function (callback) {
       if (callback == null) {
         callback = null;
       }
@@ -170,14 +170,14 @@
         async: this.async,
         dataType: 'json',
         contentType: 'application/json'
-      }).done(function() {
+      }).done(function () {
         if (callback != null) {
           return callback();
         }
       });
     };
 
-    settings.prototype.unlockBooth = function(callback) {
+    settings.prototype.unlockBooth = function (callback) {
       if (callback == null) {
         callback = null;
       }
@@ -198,7 +198,7 @@
         async: this.async,
         dataType: 'json',
         contentType: 'application/json'
-      }).done(function() {
+      }).done(function () {
         if (callback != null) {
           return callback();
         }
@@ -211,7 +211,7 @@
 
   data = new settings();
 
-  User = (function() {
+  User = (function () {
     User.prototype.afkWarningCount = 0;
 
     User.prototype.lastWarning = null;
@@ -236,21 +236,21 @@
       this.init();
     }
 
-    User.prototype.init = function() {
+    User.prototype.init = function () {
       return this.lastActivity = new Date();
     };
 
-    User.prototype.updateActivity = function() {
+    User.prototype.updateActivity = function () {
       this.lastActivity = new Date();
       this.afkWarningCount = 0;
       return this.lastWarning = null;
     };
 
-    User.prototype.getLastActivity = function() {
+    User.prototype.getLastActivity = function () {
       return this.lastActivity;
     };
 
-    User.prototype.getLastWarning = function() {
+    User.prototype.getLastWarning = function () {
       if (this.lastWarning === null) {
         return false;
       } else {
@@ -258,41 +258,38 @@
       }
     };
 
-    User.prototype.getUser = function() {
+    User.prototype.getUser = function () {
       return this.user;
     };
 
-    User.prototype.getWarningCount = function() {
+    User.prototype.getWarningCount = function () {
       return this.afkWarningCount;
     };
 
-    User.prototype.getIsDj = function() {
-      var DJs, dj, _i, _len;
-      DJs = API.getDJs();
-      for (_i = 0, _len = DJs.length; _i < _len; _i++) {
-        dj = DJs[_i];
-        if (this.user.id === dj.id) {
-          return true;
-        }
+    User.prototype.getIsDj = function () {
+      var isDj = false;
+      var dj = API.getDJ();
+      if (dj) {
+        isDj = this.user.id === this.user.id;
       }
-      return false;
+      return isDj;
     };
 
-    User.prototype.warn = function() {
+    User.prototype.warn = function () {
       this.afkWarningCount++;
       return this.lastWarning = new Date();
     };
 
-    User.prototype.notDj = function() {
+    User.prototype.notDj = function () {
       this.afkWarningCount = 0;
       return this.lastWarning = null;
     };
 
-    User.prototype.inRoom = function(online) {
+    User.prototype.inRoom = function (online) {
       return this.isInRoom = online;
     };
 
-    User.prototype.updateVote = function(v) {
+    User.prototype.updateVote = function (v) {
       if (this.isInRoom) {
         return data.voteLog[this.user.id][data.currentsong.id] = v;
       }
@@ -302,10 +299,10 @@
 
   })();
 
-  RoomHelper = (function() {
-    function RoomHelper() {}
+  RoomHelper = (function () {
+    function RoomHelper() { }
 
-    RoomHelper.prototype.lookupUser = function(username) {
+    RoomHelper.prototype.lookupUser = function (username) {
       var id, u, _ref;
       _ref = data.users;
       for (id in _ref) {
@@ -317,7 +314,7 @@
       return false;
     };
 
-    RoomHelper.prototype.userVoteRatio = function(user) {
+    RoomHelper.prototype.userVoteRatio = function (user) {
       var songId, songVotes, vote, votes;
       songVotes = data.voteLog[user.id];
       votes = {
@@ -340,11 +337,11 @@
 
   })();
 
-  pupOnline = function() {
+  pupOnline = function () {
     //return API.sendChat("On :)");
   };
 
-  populateUserData = function() {
+  populateUserData = function () {
     var u, users, _i, _len;
     users = API.getUsers();
     for (_i = 0, _len = users.length; _i < _len; _i++) {
@@ -354,12 +351,12 @@
     }
   };
 
-  initEnvironment = function() {
+  initEnvironment = function () {
     //document.getElementById("button-vote-positive").click();
     //return document.getElementById("button-sound").click();
   };
 
-  initialize = function() {
+  initialize = function () {
     pupOnline();
     populateUserData();
     initEnvironment();
@@ -370,8 +367,8 @@
     return data.startAfkInterval();
   };
 
-  afkCheck = function() {
-    var DJs, id, lastActivity, lastWarned, now, oneMinute, secsLastActive, timeSinceLastActivity, timeSinceLastWarning, twoMinutes, user, warnMsg, _ref, _results;
+  afkCheck = function () {
+    var id, lastActivity, lastWarned, now, oneMinute, secsLastActive, timeSinceLastActivity, timeSinceLastWarning, twoMinutes, user, warnMsg, _ref, _results;
     _ref = data.users;
     _results = [];
     for (id in _ref) {
@@ -402,8 +399,8 @@
             timeSinceLastWarning = now.getTime() - lastWarned.getTime();
             oneMinute = 1 * 60 * 1000;
             if (timeSinceLastWarning > oneMinute) {
-              DJs = API.getDJs();
-              if (DJs.length > 0 && DJs[0].id !== user.getUser().id) {
+              var currentDj = API.getDJ();
+              if (currentDj != null && currentDj.id !== user.getUser().id) {
                 API.sendChat("@" + user.getUser().username + ", you had 2 warnings. Please stay active by chatting or voting.");
                 API.moderateRemoveDJ(id);
                 _results.push(user.warn());
@@ -426,7 +423,7 @@
     return _results;
   };
 
-  msToStr = function(msTime) {
+  msToStr = function (msTime) {
     var ms, msg, timeAway;
     msg = '';
     timeAway = {
@@ -475,21 +472,21 @@
     }
   };
 
-  Command = (function() {
+  Command = (function () {
     function Command(msgData) {
       this.msgData = msgData;
       this.init();
     }
 
-    Command.prototype.init = function() {
+    Command.prototype.init = function () {
       this.parseType = null;
       this.command = null;
       return this.rankPrivelege = null;
     };
 
-    Command.prototype.functionality = function(data) {};
+    Command.prototype.functionality = function (data) { };
 
-    Command.prototype.hasPrivelege = function() {
+    Command.prototype.hasPrivelege = function () {
       var user;
       user = data.users[this.msgData.fromID].getUser();
       switch (this.rankPrivelege) {
@@ -510,7 +507,7 @@
       }
     };
 
-    Command.prototype.commandMatch = function() {
+    Command.prototype.commandMatch = function () {
       var command, msg, _i, _len, _ref;
       msg = this.msgData.message;
       if (typeof this.command === 'string') {
@@ -555,7 +552,7 @@
       }
     };
 
-    Command.prototype.evalMsg = function() {
+    Command.prototype.evalMsg = function () {
       if (this.commandMatch() && this.hasPrivelege()) {
         this.functionality();
         return true;
@@ -568,7 +565,7 @@
 
   })();
 
-  cookieCommand = (function(_super) {
+  cookieCommand = (function (_super) {
     __extends(cookieCommand, _super);
 
     function cookieCommand() {
@@ -576,20 +573,20 @@
       return _ref;
     }
 
-    cookieCommand.prototype.init = function() {
+    cookieCommand.prototype.init = function () {
       this.command = 'cookie';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'mod';
     };
 
-    cookieCommand.prototype.getCookie = function() {
+    cookieCommand.prototype.getCookie = function () {
       var c, cookies;
       cookies = ["a chocolate chip cookie", "a sugar cookie", "an oatmeal raisin cookie", "a 'special' brownie", "an animal cracker", "a scooby snack", "a blueberry muffin", "a cupcake"];
       c = Math.floor(Math.random() * cookies.length);
       return cookies[c];
     };
 
-    cookieCommand.prototype.functionality = function() {
+    cookieCommand.prototype.functionality = function () {
       var msg, r, user;
       msg = this.msgData.message;
       r = new RoomHelper();
@@ -608,7 +605,7 @@
 
   })(Command);
 
-  newSongsCommand = (function(_super) {
+  newSongsCommand = (function (_super) {
     __extends(newSongsCommand, _super);
 
     function newSongsCommand() {
@@ -616,18 +613,18 @@
       return _ref1;
     }
 
-    newSongsCommand.prototype.init = function() {
+    newSongsCommand.prototype.init = function () {
       this.command = '!newsongs';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'user';
     };
 
-    newSongsCommand.prototype.functionality = function() {
+    newSongsCommand.prototype.functionality = function () {
       var arts, cMedia, chans, chooseRandom, mChans, msg, selections, u, _ref2;
       mChans = this.memberChannels.slice(0);
       chans = this.channels.slice(0);
       arts = this.artists.slice(0);
-      chooseRandom = function(list) {
+      chooseRandom = function (list) {
         var l, r;
         l = list.length;
         r = Math.floor(Math.random() * l);
@@ -667,7 +664,7 @@
 
   })(Command);
 
-  whyWootCommand = (function(_super) {
+  whyWootCommand = (function (_super) {
     __extends(whyWootCommand, _super);
 
     function whyWootCommand() {
@@ -675,13 +672,13 @@
       return _ref2;
     }
 
-    whyWootCommand.prototype.init = function() {
+    whyWootCommand.prototype.init = function () {
       this.command = '!whywoot';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'user';
     };
 
-    whyWootCommand.prototype.functionality = function() {
+    whyWootCommand.prototype.functionality = function () {
       var msg, nameIndex;
       msg = "We dislike AFK djs. We calculate your AFK status by checking the last time you     Woot'd or spoke. If you don't woot, I'll automagically remove you. Use our AutoWoot     script to avoid being removed: http://bit.ly/McZdWw";
       if ((nameIndex = this.msgData.message.indexOf('@')) !== -1) {
@@ -695,7 +692,7 @@
 
   })(Command);
 
-  themeCommand = (function(_super) {
+  themeCommand = (function (_super) {
     __extends(themeCommand, _super);
 
     function themeCommand() {
@@ -703,13 +700,13 @@
       return _ref3;
     }
 
-    themeCommand.prototype.init = function() {
+    themeCommand.prototype.init = function () {
       this.command = '!theme';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'user';
     };
 
-    themeCommand.prototype.functionality = function() {
+    themeCommand.prototype.functionality = function () {
       var msg;
       msg = "All reggae all the time! ";
       msg += "Reggae, Rastadub, Reggae Dancehall";
@@ -720,7 +717,7 @@
 
   })(Command);
 
-  rulesCommand = (function(_super) {
+  rulesCommand = (function (_super) {
     __extends(rulesCommand, _super);
 
     function rulesCommand() {
@@ -728,13 +725,13 @@
       return _ref4;
     }
 
-    rulesCommand.prototype.init = function() {
+    rulesCommand.prototype.init = function () {
       this.command = '!rules';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'user';
     };
 
-    rulesCommand.prototype.functionality = function() {
+    rulesCommand.prototype.functionality = function () {
       var msg;
       msg = "1) Play good sound quality music. ";
       msg += "2) Don't replay a song on the room history. 3) Max song limit 8 minutes. ";
@@ -746,7 +743,7 @@
 
   })(Command);
 
-  roomHelpCommand = (function(_super) {
+  roomHelpCommand = (function (_super) {
     __extends(roomHelpCommand, _super);
 
     function roomHelpCommand() {
@@ -754,19 +751,19 @@
       return _ref5;
     }
 
-    roomHelpCommand.prototype.init = function() {
+    roomHelpCommand.prototype.init = function () {
       this.command = '!roomhelp';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'user';
     };
 
-    roomHelpCommand.prototype.functionality = function() {
+    roomHelpCommand.prototype.functionality = function () {
       var msg1, msg2;
       msg1 = "Welcome to Reggae For All! ";
       msg1 += "Click the 'Join Waitlist' button and wait your turn to play music. Most electronic music allowed, type '!theme' for specifics. ";
       msg2 = "Stay active while waiting to play your song or I'll remove you. Play good quality music that hasn't been played recently (check room history).  ";
       API.sendChat(msg1);
-      return setTimeout((function() {
+      return setTimeout((function () {
         return API.sendChat(msg2);
       }), 750);
     };
@@ -775,7 +772,7 @@
 
   })(Command);
 
-  sourceCommand = (function(_super) {
+  sourceCommand = (function (_super) {
     __extends(sourceCommand, _super);
 
     function sourceCommand() {
@@ -783,13 +780,13 @@
       return _ref6;
     }
 
-    sourceCommand.prototype.init = function() {
+    sourceCommand.prototype.init = function () {
       this.command = ['/source', '/sourcecode', '/author'];
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
 
-    sourceCommand.prototype.functionality = function() {
+    sourceCommand.prototype.functionality = function () {
       var msg;
       msg = 'Ported from source by Backus - modified by webdevbrian';
       return API.sendChat(msg);
@@ -799,7 +796,7 @@
 
   })(Command);
 
-  wootCommand = (function(_super) {
+  wootCommand = (function (_super) {
     __extends(wootCommand, _super);
 
     function wootCommand() {
@@ -807,13 +804,13 @@
       return _ref7;
     }
 
-    wootCommand.prototype.init = function() {
+    wootCommand.prototype.init = function () {
       this.command = '!woot';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'user';
     };
 
-    wootCommand.prototype.functionality = function() {
+    wootCommand.prototype.functionality = function () {
       var msg, nameIndex;
       msg = "Please WOOT on DJ Booth and support your fellow DJs! AutoWoot: bit.ly/Lwcis0";
       if ((nameIndex = this.msgData.message.indexOf('@')) !== -1) {
@@ -827,7 +824,7 @@
 
   })(Command);
 
-  badQualityCommand = (function(_super) {
+  badQualityCommand = (function (_super) {
     __extends(badQualityCommand, _super);
 
     function badQualityCommand() {
@@ -835,13 +832,13 @@
       return _ref8;
     }
 
-    badQualityCommand.prototype.init = function() {
+    badQualityCommand.prototype.init = function () {
       this.command = '.128';
       this.parseType = 'exact';
       return this.rankPrivelege = 'mod';
     };
 
-    badQualityCommand.prototype.functionality = function() {
+    badQualityCommand.prototype.functionality = function () {
       var msg;
       msg = "Flagged for bad sound quality. Where do you get your music? The garbage can? Don't play this low quality tune again!";
       return API.sendChat(msg);
@@ -851,7 +848,7 @@
 
   })(Command);
 
-  downloadCommand = (function(_super) {
+  downloadCommand = (function (_super) {
     __extends(downloadCommand, _super);
 
     function downloadCommand() {
@@ -859,13 +856,13 @@
       return _ref9;
     }
 
-    downloadCommand.prototype.init = function() {
+    downloadCommand.prototype.init = function () {
       this.command = '!download';
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
 
-    downloadCommand.prototype.functionality = function() {
+    downloadCommand.prototype.functionality = function () {
       var e, eAuthor, eTitle, msg;
       if (data.currentsong == null) {
         return;
@@ -883,7 +880,7 @@
 
   })(Command);
 
-  allAfksCommand = (function(_super) {
+  allAfksCommand = (function (_super) {
     __extends(allAfksCommand, _super);
 
     function allAfksCommand() {
@@ -891,13 +888,13 @@
       return _ref11;
     }
 
-    allAfksCommand.prototype.init = function() {
+    allAfksCommand.prototype.init = function () {
       this.command = '!allafks';
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
 
-    allAfksCommand.prototype.functionality = function() {
+    allAfksCommand.prototype.functionality = function () {
       var msg, now, u, uAfk, usrs, _i, _len;
       msg = '';
       usrs = API.getUsers();
@@ -923,7 +920,7 @@
 
   })(Command);
 
-  statusCommand = (function(_super) {
+  statusCommand = (function (_super) {
     __extends(statusCommand, _super);
 
     function statusCommand() {
@@ -931,13 +928,13 @@
       return _ref12;
     }
 
-    statusCommand.prototype.init = function() {
+    statusCommand.prototype.init = function () {
       this.command = '!status';
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
 
-    statusCommand.prototype.functionality = function() {
+    statusCommand.prototype.functionality = function () {
       var day, hour, launch, lt, meridian, min, month, msg, t, totals;
       lt = data.launchTime;
       month = lt.getMonth() + 1;
@@ -958,7 +955,7 @@
 
   })(Command);
 
-  unhookCommand = (function(_super) {
+  unhookCommand = (function (_super) {
     __extends(unhookCommand, _super);
 
     function unhookCommand() {
@@ -966,13 +963,13 @@
       return _ref13;
     }
 
-    unhookCommand.prototype.init = function() {
+    unhookCommand.prototype.init = function () {
       this.command = '!unhook events all';
       this.parseType = 'exact';
       return this.rankPrivelege = 'host';
     };
 
-    unhookCommand.prototype.functionality = function() {
+    unhookCommand.prototype.functionality = function () {
       API.sendChat('Unhooking all events...');
       return undoHooks();
     };
@@ -981,7 +978,7 @@
 
   })(Command);
 
-  dieCommand = (function(_super) {
+  dieCommand = (function (_super) {
     __extends(dieCommand, _super);
 
     function dieCommand() {
@@ -989,13 +986,13 @@
       return _ref14;
     }
 
-    dieCommand.prototype.init = function() {
+    dieCommand.prototype.init = function () {
       this.command = '!die';
       this.parseType = 'exact';
       return this.rankPrivelege = 'host';
     };
 
-    dieCommand.prototype.functionality = function() {
+    dieCommand.prototype.functionality = function () {
       API.sendChat('Unhooking Events...');
       undoHooks();
       API.sendChat('Deleting bot data...');
@@ -1007,7 +1004,7 @@
 
   })(Command);
 
-  reloadCommand = (function(_super) {
+  reloadCommand = (function (_super) {
     __extends(reloadCommand, _super);
 
     function reloadCommand() {
@@ -1015,13 +1012,13 @@
       return _ref15;
     }
 
-    reloadCommand.prototype.init = function() {
+    reloadCommand.prototype.init = function () {
       this.command = '!reload';
       this.parseType = 'exact';
       return this.rankPrivelege = 'host';
     };
 
-    reloadCommand.prototype.functionality = function() {
+    reloadCommand.prototype.functionality = function () {
       var pupSrc;
       API.sendChat('brb');
       undoHooks();
@@ -1034,7 +1031,7 @@
 
   })(Command);
 
-  lockCommand = (function(_super) {
+  lockCommand = (function (_super) {
     __extends(lockCommand, _super);
 
     function lockCommand() {
@@ -1042,13 +1039,13 @@
       return _ref16;
     }
 
-    lockCommand.prototype.init = function() {
+    lockCommand.prototype.init = function () {
       this.command = '!lock';
       this.parseType = 'exact';
       return this.rankPrivelege = 'mod';
     };
 
-    lockCommand.prototype.functionality = function() {
+    lockCommand.prototype.functionality = function () {
       return data.lockBooth();
     };
 
@@ -1056,7 +1053,7 @@
 
   })(Command);
 
-  unlockCommand = (function(_super) {
+  unlockCommand = (function (_super) {
     __extends(unlockCommand, _super);
 
     function unlockCommand() {
@@ -1064,13 +1061,13 @@
       return _ref17;
     }
 
-    unlockCommand.prototype.init = function() {
+    unlockCommand.prototype.init = function () {
       this.command = '!unlock';
       this.parseType = 'exact';
       return this.rankPrivelege = 'mod';
     };
 
-    unlockCommand.prototype.functionality = function() {
+    unlockCommand.prototype.functionality = function () {
       return data.unlockBooth();
     };
 
@@ -1078,7 +1075,7 @@
 
   })(Command);
 
-  swapCommand = (function(_super) {
+  swapCommand = (function (_super) {
     __extends(swapCommand, _super);
 
     function swapCommand() {
@@ -1086,13 +1083,13 @@
       return _ref18;
     }
 
-    swapCommand.prototype.init = function() {
+    swapCommand.prototype.init = function () {
       this.command = '!swap';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'mod';
     };
 
-    swapCommand.prototype.functionality = function() {
+    swapCommand.prototype.functionality = function () {
       var msg, r, swapRegex, userAdd, userRemove, users;
       msg = this.msgData.message;
       swapRegex = new RegExp("^/swap @(.+) for @(.+)$");
@@ -1105,13 +1102,13 @@
           API.sendChat('Error parsing one or both names');
           return false;
         } else {
-          return data.lockBooth(function() {
+          return data.lockBooth(function () {
             API.moderateRemoveDJ(userRemove.id);
             API.sendChat("Removing " + userRemove.username + "...");
-            return setTimeout(function() {
+            return setTimeout(function () {
               API.moderateAddDJ(userAdd.id);
               API.sendChat("Adding " + userAdd.username + "...");
-              return setTimeout(function() {
+              return setTimeout(function () {
                 return data.unlockBooth();
               }, 1500);
             }, 1500);
@@ -1126,7 +1123,7 @@
 
   })(Command);
 
-  popCommand = (function(_super) {
+  popCommand = (function (_super) {
     __extends(popCommand, _super);
 
     function popCommand() {
@@ -1134,16 +1131,16 @@
       return _ref19;
     }
 
-    popCommand.prototype.init = function() {
+    popCommand.prototype.init = function () {
       this.command = '!pop';
       this.parseType = 'exact';
       return this.rankPrivelege = 'mod';
     };
 
-    popCommand.prototype.functionality = function() {
-      var djs, popDj;
-      djs = API.getDJs();
-      popDj = djs[djs.length - 1];
+    popCommand.prototype.functionality = function () {
+      var waitList, popDj;
+      waitList = API.getWaitList();
+      popDj = waitList[waitList.length - 1];
       return API.moderateRemoveDJ(popDj.id);
     };
 
@@ -1151,7 +1148,7 @@
 
   })(Command);
 
-  pushCommand = (function(_super) {
+  pushCommand = (function (_super) {
     __extends(pushCommand, _super);
 
     function pushCommand() {
@@ -1159,13 +1156,13 @@
       return _ref20;
     }
 
-    pushCommand.prototype.init = function() {
+    pushCommand.prototype.init = function () {
       this.command = '!push';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'mod';
     };
 
-    pushCommand.prototype.functionality = function() {
+    pushCommand.prototype.functionality = function () {
       var msg, name, r, user;
       msg = this.msgData.message;
       if (msg.length > this.command.length + 2) {
@@ -1182,7 +1179,7 @@
 
   })(Command);
 
-  resetAfkCommand = (function(_super) {
+  resetAfkCommand = (function (_super) {
     __extends(resetAfkCommand, _super);
 
     function resetAfkCommand() {
@@ -1190,13 +1187,13 @@
       return _ref21;
     }
 
-    resetAfkCommand.prototype.init = function() {
+    resetAfkCommand.prototype.init = function () {
       this.command = '!resetafk';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'mod';
     };
 
-    resetAfkCommand.prototype.functionality = function() {
+    resetAfkCommand.prototype.functionality = function () {
       var id, name, u, _ref22;
       if (this.msgData.message.length > 10) {
         name = this.msgData.message.substring(11);
@@ -1219,7 +1216,7 @@
 
   })(Command);
 
-  forceSkipCommand = (function(_super) {
+  forceSkipCommand = (function (_super) {
     __extends(forceSkipCommand, _super);
 
     function forceSkipCommand() {
@@ -1227,13 +1224,13 @@
       return _ref22;
     }
 
-    forceSkipCommand.prototype.init = function() {
+    forceSkipCommand.prototype.init = function () {
       this.command = '!forceskip';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'mod';
     };
 
-    forceSkipCommand.prototype.functionality = function() {
+    forceSkipCommand.prototype.functionality = function () {
       var msg, param;
       msg = this.msgData.message;
       if (msg.length > 11) {
@@ -1252,7 +1249,7 @@
 
   })(Command);
 
-  overplayedCommand = (function(_super) {
+  overplayedCommand = (function (_super) {
     __extends(overplayedCommand, _super);
 
     function overplayedCommand() {
@@ -1260,13 +1257,13 @@
       return _ref23;
     }
 
-    overplayedCommand.prototype.init = function() {
+    overplayedCommand.prototype.init = function () {
       this.command = '!overplayed';
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
 
-    overplayedCommand.prototype.functionality = function() {
+    overplayedCommand.prototype.functionality = function () {
       return API.sendChat("View the list of songs we consider overplayed and suggest additions at http://den.johnback.us/overplayed_tracks");
     };
 
@@ -1274,7 +1271,7 @@
 
   })(Command);
 
-  uservoiceCommand = (function(_super) {
+  uservoiceCommand = (function (_super) {
     __extends(uservoiceCommand, _super);
 
     function uservoiceCommand() {
@@ -1282,13 +1279,13 @@
       return _ref24;
     }
 
-    uservoiceCommand.prototype.init = function() {
+    uservoiceCommand.prototype.init = function () {
       this.command = ['/uservoice', '/idea'];
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
 
-    uservoiceCommand.prototype.functionality = function() {
+    uservoiceCommand.prototype.functionality = function () {
       var msg;
       msg = 'Have an idea for the room, our bot, or an event?  Awesome! Submit it to our uservoice and we\'ll get started on it: http://is.gd/IzP4bA';
       msg += ' (please don\'t ask for mod)';
@@ -1299,7 +1296,7 @@
 
   })(Command);
 
-  skipCommand = (function(_super) {
+  skipCommand = (function (_super) {
     __extends(skipCommand, _super);
 
     function skipCommand() {
@@ -1307,13 +1304,13 @@
       return _ref25;
     }
 
-    skipCommand.prototype.init = function() {
+    skipCommand.prototype.init = function () {
       this.command = '!skip';
       this.parseType = 'exact';
       return this.rankPrivelege = 'mod';
     };
 
-    skipCommand.prototype.functionality = function() {
+    skipCommand.prototype.functionality = function () {
       return API.moderateForceSkip();
     };
 
@@ -1321,7 +1318,7 @@
 
   })(Command);
 
-  whyMehCommand = (function(_super) {
+  whyMehCommand = (function (_super) {
     __extends(whyMehCommand, _super);
 
     function whyMehCommand() {
@@ -1329,13 +1326,13 @@
       return _ref26;
     }
 
-    whyMehCommand.prototype.init = function() {
+    whyMehCommand.prototype.init = function () {
       this.command = '!whymeh';
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
 
-    whyMehCommand.prototype.functionality = function() {
+    whyMehCommand.prototype.functionality = function () {
       var msg;
       msg = "Reserve Mehs for songs that are a) extremely overplayed b) off genre c) absolutely god awful or d) troll songs. ";
       msg += "If you simply aren't feeling a song, then remain neutral";
@@ -1346,7 +1343,7 @@
 
   })(Command);
 
-  commandsCommand = (function(_super) {
+  commandsCommand = (function (_super) {
     __extends(commandsCommand, _super);
 
     function commandsCommand() {
@@ -1354,13 +1351,13 @@
       return _ref27;
     }
 
-    commandsCommand.prototype.init = function() {
+    commandsCommand.prototype.init = function () {
       this.command = '!commands';
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
 
-    commandsCommand.prototype.functionality = function() {
+    commandsCommand.prototype.functionality = function () {
       var allowedUserLevels, c, cc, cmd, msg, user, _i, _j, _len, _len1, _ref28, _ref29;
       allowedUserLevels = [];
       user = API.getUser(this.msgData.fromID);
@@ -1375,17 +1372,21 @@
       msg = '';
       for (_i = 0, _len = cmds.length; _i < _len; _i++) {
         cmd = cmds[_i];
-        c = new cmd('');
-        if (_ref28 = c.rankPrivelege, __indexOf.call(allowedUserLevels, _ref28) >= 0) {
-          if (typeof c.command === "string") {
-            msg += c.command + ', ';
-          } else if (typeof c.command === "object") {
-            _ref29 = c.command;
-            for (_j = 0, _len1 = _ref29.length; _j < _len1; _j++) {
-              cc = _ref29[_j];
-              msg += cc + ', ';
+        if (cmd) {
+          c = new cmd('');
+          if (_ref28 = c.rankPrivelege, __indexOf.call(allowedUserLevels, _ref28) >= 0) {
+            if (typeof c.command === "string") {
+              msg += c.command + ', ';
+            } else if (typeof c.command === "object") {
+              _ref29 = c.command;
+              for (_j = 0, _len1 = _ref29.length; _j < _len1; _j++) {
+                cc = _ref29[_j];
+                msg += cc + ', ';
+              }
             }
           }
+        } else {
+          console.log("Bad cmd or missing function definition: index: " + _i + " name: " + cmd);
         }
       }
       msg = msg.substring(0, msg.length - 2);
@@ -1396,7 +1397,7 @@
 
   })(Command);
 
-  disconnectLookupCommand = (function(_super) {
+  disconnectLookupCommand = (function (_super) {
     __extends(disconnectLookupCommand, _super);
 
     function disconnectLookupCommand() {
@@ -1404,13 +1405,13 @@
       return _ref28;
     }
 
-    disconnectLookupCommand.prototype.init = function() {
+    disconnectLookupCommand.prototype.init = function () {
       this.command = '!dclookup';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'mod';
     };
 
-    disconnectLookupCommand.prototype.functionality = function() {
+    disconnectLookupCommand.prototype.functionality = function () {
       var cmd, dcHour, dcLookupId, dcMeridian, dcMins, dcSongsAgo, dcTimeStr, dcUser, disconnectInstances, givenName, id, recentDisconnect, resp, u, _i, _len, _ref29, _ref30;
       cmd = this.msgData.message;
       if (cmd.length > 11) {
@@ -1470,7 +1471,7 @@
 
   })(Command);
 
-  voteRatioCommand = (function(_super) {
+  voteRatioCommand = (function (_super) {
     __extends(voteRatioCommand, _super);
 
     function voteRatioCommand() {
@@ -1478,13 +1479,13 @@
       return _ref29;
     }
 
-    voteRatioCommand.prototype.init = function() {
+    voteRatioCommand.prototype.init = function () {
       this.command = '!voteratio';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'mod';
     };
 
-    voteRatioCommand.prototype.functionality = function() {
+    voteRatioCommand.prototype.functionality = function () {
       var msg, name, r, u, votes;
       r = new RoomHelper();
       msg = this.msgData.message;
@@ -1519,7 +1520,7 @@
 
   })(Command);
 
-  avgVoteRatioCommand = (function(_super) {
+  avgVoteRatioCommand = (function (_super) {
     __extends(avgVoteRatioCommand, _super);
 
     function avgVoteRatioCommand() {
@@ -1527,13 +1528,13 @@
       return _ref30;
     }
 
-    avgVoteRatioCommand.prototype.init = function() {
+    avgVoteRatioCommand.prototype.init = function () {
       this.command = '!avgvoteratio';
       this.parseType = 'exact';
       return this.rankPrivelege = 'mod';
     };
 
-    avgVoteRatioCommand.prototype.functionality = function() {
+    avgVoteRatioCommand.prototype.functionality = function () {
       var averageRatio, msg, r, ratio, roomRatios, uid, user, userRatio, votes, _i, _len, _ref31;
       roomRatios = [];
       r = new RoomHelper();
@@ -1557,42 +1558,69 @@
     return avgVoteRatioCommand;
 
   })(Command);
+  
+  fortuneCommand = (function (_super) {
+    __extends(fortuneCommand, _super);
 
-  cmds = [cookieCommand, newSongsCommand, whyWootCommand, themeCommand, rulesCommand, roomHelpCommand, sourceCommand, wootCommand, badQualityCommand, downloadCommand, afksCommand, allAfksCommand, statusCommand, unhookCommand, dieCommand, reloadCommand, lockCommand, unlockCommand, swapCommand, popCommand, pushCommand, overplayedCommand, uservoiceCommand, whyMehCommand, skipCommand, commandsCommand, resetAfkCommand, forceSkipCommand, disconnectLookupCommand, voteRatioCommand, avgVoteRatioCommand];
+    function fortuneCommand() {
+      var ref = fortuneCommand.__super__.constructor.apply(this, arguments);
+      return ref;
+    }
 
-  chatCommandDispatcher = function(chat) {
+    fortuneCommand.prototype.init = function () {
+      this.command = ['!fortune'];
+      this.parseType = 'startsWith';
+      return this.rankPrivelege = 'user';
+    };
+
+    fortuneCommand.prototype.functionality = function () {
+      var fortune = RastaFortuneSvc.getFortune();
+      return API.sendChat(fortune);
+    };
+    
+    return fortuneCommand;
+    
+  })(Command);
+
+  cmds = [cookieCommand, newSongsCommand, whyWootCommand, themeCommand, rulesCommand, roomHelpCommand, sourceCommand, wootCommand, badQualityCommand, downloadCommand, allAfksCommand, statusCommand, unhookCommand, dieCommand, reloadCommand, lockCommand, unlockCommand, swapCommand, popCommand, pushCommand, overplayedCommand, uservoiceCommand, whyMehCommand, skipCommand, commandsCommand, resetAfkCommand, forceSkipCommand, disconnectLookupCommand, voteRatioCommand, avgVoteRatioCommand, fortuneCommand];
+
+  chatCommandDispatcher = function (chat) {
     var c, cmd, _i, _len, _results;
     chatUniversals(chat);
     _results = [];
     for (_i = 0, _len = cmds.length; _i < _len; _i++) {
       cmd = cmds[_i];
-      c = new cmd(chat);
-      if (c.evalMsg()) {
-        break;
+      if (cmd) {
+        c = new cmd(chat);
+        if (c.evalMsg()) {
+          break;
+        } else {
+          _results.push(void 0);
+        }
       } else {
-        _results.push(void 0);
+        console.log("Bad cmd or missing function definition: index: " + _i + " name: " + cmd);
       }
     }
     return _results;
   };
 
-  updateVotes = function(obj) {
+  updateVotes = function (obj) {
     data.currentwoots = obj.positive;
     data.currentmehs = obj.negative;
     return data.currentcurates = obj.curates;
   };
 
-  announceCurate = function(obj) {
+  announceCurate = function (obj) {
     return API.sendChat("/em: " + obj.user.username + " grabbed this song!");
   };
 
-  handleUserJoin = function(user) {
+  handleUserJoin = function (user) {
     data.userJoin(user);
     data.users[user.id].updateActivity();
     return API.sendChat("/em: " + user.username + " has joined the Room!");
   };
 
-  handleNewSong = function(obj) {
+  handleNewSong = function (obj) {
     var songId;
     data.intervalMessages();
     if (data.currentsong === null) {
@@ -1605,7 +1633,7 @@
     }
     if (data.forceSkip) {
       songId = obj.media.id;
-      return setTimeout(function() {
+      return setTimeout(function () {
         var cMedia;
         cMedia = API.getMedia();
         if (cMedia.id === songId) {
@@ -1615,12 +1643,12 @@
     }
   };
 
-  handleVote = function(obj) {
+  handleVote = function (obj) {
     data.users[obj.user.id].updateActivity();
     return data.users[obj.user.id].updateVote(obj.vote);
   };
 
-  handleUserLeave = function(user) {
+  handleUserLeave = function (user) {
     var disconnectStats, i, u, _i, _len, _ref31;
     disconnectStats = {
       id: user.id,
@@ -1643,7 +1671,7 @@
     return data.users[user.id].inRoom(false);
   };
 
-  antispam = function(chat) {
+  antispam = function (chat) {
     var plugRoomLinkPatt, sender;
     plugRoomLinkPatt = /(\bhttps?:\/\/(www.)?plug\.dj[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
     if (plugRoomLinkPatt.exec(chat.message)) {
@@ -1659,7 +1687,7 @@
     }
   };
 
-  beggar = function(chat) {
+  beggar = function (chat) {
     var msg, r, responses;
     msg = chat.message.toLowerCase();
     responses = ["No begging please!"];
@@ -1669,18 +1697,17 @@
     }
   };
 
-  chatUniversals = function(chat) {
+  chatUniversals = function (chat) {
     data.activity(chat);
     antispam(chat);
-    RastaFortuneSvc.checkFortuneRequest(chat);
     return beggar(chat);
   };
 
-  hook = function(apiEvent, callback) {
+  hook = function (apiEvent, callback) {
     return API.on(apiEvent, callback);
   };
 
-  unhook = function(apiEvent, callback) {
+  unhook = function (apiEvent, callback) {
     return API.off(apiEvent, callback);
   };
 
@@ -1709,7 +1736,7 @@
     }
   ];
 
-  initHooks = function() {
+  initHooks = function () {
     var pair, _i, _len, _results;
     _results = [];
     for (_i = 0, _len = apiHooks.length; _i < _len; _i++) {
@@ -1719,7 +1746,7 @@
     return _results;
   };
 
-  undoHooks = function() {
+  undoHooks = function () {
     var pair, _i, _len, _results;
     _results = [];
     for (_i = 0, _len = apiHooks.length; _i < _len; _i++) {
@@ -1732,7 +1759,7 @@
   RastaFortuneSvc = {
     _fortuneLen: 40,
     _fortunes: new Array(),
-    init: function() {
+    init: function () {
       this._fortunes[0] = "Everyting will come yuh way mon.";
       this._fortunes[1] = "Now is di time to try someting new.";
       this._fortunes[2] = "A handful of payshense is wort more dan a bushel of brains.";
@@ -1765,7 +1792,7 @@
       this._fortunes[29] = "Yuh display di wonderful traits of charm and courtesy.";
       this._fortunes[30] = "Yuh talented in many ways.";
       this._fortunes[31] = "Good faatune awaits yuh at di end of di day. Chill out and smoke a spliff.";
-      this._fortunes[32] = "Treat everyone as a bredren ar a daughta.";
+      this._fortunes[32] = "Treat everyone as a bredren or a daughta.";
       this._fortunes[33] = "Yuh are di guiding star of his Excellence. Haile Selassie I, JAH, RASTAFARI!";
       this._fortunes[34] = "Yuh are open and honest in yuh philosophy of love.";
       this._fortunes[35] = "Simplicity should be yuh theme in dress.";
@@ -1774,18 +1801,16 @@
       this._fortunes[38] = "Yuh talents will be recognized and suitably rewarded.";
       this._fortunes[39] = "Don't be hasty, prosperity will knock on yuh door soon. Light up a splif and drink some irish moss.";
     },
-    checkFortuneRequest: function (chatData) {
-      if (chatData.message.indexOf("!fortune") != -1) {
-        var now = new Date();
-        var seed = now.getTime() % 0xffffffff;
+    getFortune: function () {
+      var now = new Date();
+      var seed = now.getTime() % 0xffffffff;
 
-        seed = (0x015a4e35 * seed) % 0x7fffffff;
-        var random = (seed >> 16) % this._fortuneLen;
+      seed = (0x015a4e35 * seed) % 0x7fffffff;
+      var random = (seed >> 16) % this._fortuneLen;
 
-        var fortune = this._fortunes[random];
-        API.sendChat(chatData.from + ": " + fortune);
-      }
+      return this._fortunes[random];
     }
+    
   };
 
   initialize();
