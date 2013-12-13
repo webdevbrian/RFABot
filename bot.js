@@ -514,9 +514,9 @@
     }
 
     cookieCommand.prototype.init = function () {
-      this.command = 'splif';
+      this.command = 'spliff';
       this.parseType = 'startsWith';
-      return this.rankPrivelege = 'bouncer';
+      return this.rankPrivelege = 'user';
     };
 
     cookieCommand.prototype.getCookie = function () {
@@ -620,7 +620,7 @@
 
     whyWootCommand.prototype.functionality = function () {
       var msg, nameIndex;
-      msg = "Pszzzzzt, yuh AFK? If you don't woot, yuh gone. Use our AutoWoot provided by: x.co/plugxx";
+      msg = "Pszzzzzt, yuh AFK? If you don't woot, yuh gone. Use our AutoWoot provided by: http://x.co/plugxx - get the RFA ext while you're at it http://x.co/rfaext";
       if ((nameIndex = this.msgData.message.indexOf('@')) !== -1) {
         return API.sendChat(this.msgData.message.substr(nameIndex) + ', ' + msg);
       } else {
@@ -752,7 +752,7 @@
 
     wootCommand.prototype.functionality = function () {
       var msg, nameIndex;
-      msg = "Please WOOT on DJ Booth and support your fellow DJs! AutoWoot: x.co/rfaext and x.co/plugxx";
+      msg = "Please WOOT on DJ Booth and support your fellow DJs! AutoWoot: http://x.co/rfaext and http://x.co/plugxx";
       if ((nameIndex = this.msgData.message.indexOf('@')) !== -1) {
         return API.sendChat(this.msgData.message.substr(nameIndex) + ', ' + msg);
       } else {
