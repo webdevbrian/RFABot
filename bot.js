@@ -117,7 +117,7 @@
         return this.users[obj.fromID].updateActivity();
       }
     };
-    
+
     settings.prototype.intervalMessages = function () {
       var msg, _i, _len, _ref, _results;
       this.songCount++;
@@ -362,7 +362,7 @@
     RastaFortuneSvc.init();
     //return data.startAfkInterval();
   };
-  
+
   msToStr = function (msTime) {
     var ms, msg, timeAway;
     msg = '';
@@ -514,14 +514,14 @@
     }
 
     cookieCommand.prototype.init = function () {
-      this.command = 'cookie';
+      this.command = 'splif';
       this.parseType = 'startsWith';
-      return this.rankPrivelege = 'mod';
+      return this.rankPrivelege = 'bouncer';
     };
 
     cookieCommand.prototype.getCookie = function () {
       var c, cookies;
-      cookies = ["a chocolate chip cookie", "a sugar cookie", "an oatmeal raisin cookie", "a 'special' brownie", "an animal cracker", "a scooby snack", "a blueberry muffin", "a cupcake"];
+      cookies = ["a small joint", "an arizona green", "some white window", "some big bud", "some nice bubblegum quality", "some Holland hope", "sour diesel", "a vortex", "hmmm, silver haze", "some special queen", "a blue velvet", "some nice cinderalla quality"];
       c = Math.floor(Math.random() * cookies.length);
       return cookies[c];
     };
@@ -533,10 +533,10 @@
       if (msg.substring(7, 8) === "@") {
         user = r.lookupUser(msg.substr(8));
         if (user === false) {
-          API.sendChat("/em doesn't see '" + msg.substr(8) + "' in room and eats cookie himself");
+          API.sendChat("/em doesn't see '" + msg.substr(8) + "' in room and lights up by himself");
           return false;
         } else {
-          return API.sendChat("@" + user.username + ", @" + this.msgData.from + " has rewarded you with " + this.getCookie() + ". Enjoy.");
+          return API.sendChat("@" + user.username + ", @" + this.msgData.from + " shares " + this.getCookie() + " with yuh. Puff, puff give.");
         }
       }
     };
@@ -560,45 +560,45 @@
     };
 
     newSongsCommand.prototype.functionality = function () {
-      var arts, cMedia, chans, chooseRandom, mChans, msg, selections, u, _ref2;
-      mChans = this.memberChannels.slice(0);
-      chans = this.channels.slice(0);
-      arts = this.artists.slice(0);
-      chooseRandom = function (list) {
-        var l, r;
-        l = list.length;
-        r = Math.floor(Math.random() * l);
-        return list.splice(r, 1);
-      };
-      selections = {
-        channels: [],
-        artist: ''
-      };
-      u = data.users[this.msgData.fromID].getUser().username;
-      if (u.indexOf("MistaDubstep") !== -1) {
-        selections['channels'].push('MistaDubstep');
-      } else if (u.indexOf("Underground Promotions") !== -1) {
-        selections['channels'].push('UndergroundDubstep');
-      } else {
-        selections['channels'].push(chooseRandom(mChans));
-      }
-      selections['channels'].push(chooseRandom(chans));
-      selections['channels'].push(chooseRandom(chans));
-      cMedia = API.getMedia();
-      if ((cMedia != null) && (_ref2 = cMedia.author, __indexOf.call(arts, _ref2) >= 0)) {
-        selections['artist'] = cMedia.author;
-      } else {
-        selections['artist'] = chooseRandom(arts);
-      }
-      msg = "Everyone's heard that " + selections['artist'] + " track! Get new music from http://youtube.com/" + selections['channels'][0] + " http://youtube.com/" + selections['channels'][1] + " or http://youtube.com/" + selections['channels'][2];
-      return API.sendChat(msg);
+      //var arts, cMedia, chans, chooseRandom, mChans, msg, selections, u, _ref2;
+      //mChans = this.memberChannels.slice(0);
+      //chans = this.channels.slice(0);
+      //arts = this.artists.slice(0);
+      //chooseRandom = function (list) {
+      //  var l, r;
+      //  l = list.length;
+      //  r = Math.floor(Math.random() * l);
+      //  return list.splice(r, 1);
+      //};
+      //selections = {
+      //  channels: [],
+      //  artist: ''
+      //};
+      //u = data.users[this.msgData.fromID].getUser().username;
+      //if (u.indexOf("MistaDubstep") !== -1) {
+      //  selections['channels'].push('MistaDubstep');
+      //} else if (u.indexOf("Underground Promotions") !== -1) {
+      //  selections['channels'].push('UndergroundDubstep');
+      //} else {
+      //  selections['channels'].push(chooseRandom(mChans));
+      //}
+      //selections['channels'].push(chooseRandom(chans));
+      //selections['channels'].push(chooseRandom(chans));
+      //cMedia = API.getMedia();
+      //if ((cMedia != null) && (_ref2 = cMedia.author, __indexOf.call(arts, _ref2) >= 0)) {
+      //  selections['artist'] = cMedia.author;
+      //} else {
+      //  selections['artist'] = chooseRandom(arts);
+      //}
+      //msg = "Everyone's heard that " + selections['artist'] + " track! Get new music from http://youtube.com/" + selections['channels'][0] + " http://youtube.com/" + selections['channels'][1] + " or http://youtube.com/" + selections['channels'][2];
+      return API.sendChat("That's a popular song...you wanna get some new music from youtube.com!");
     };
 
-    newSongsCommand.prototype.memberChannels = ["JitterStep", "MistaDubstep", "DubStationPromotions", "UndergroundDubstep", "JesusDied4Dubstep", "DarkstepWarrior", "BombshockDubstep", "Sharestep"];
+    newSongsCommand.prototype.memberChannels = ["Reggae"];
 
-    newSongsCommand.prototype.channels = ["BassRape", "Mudstep", "WobbleCraftDubz", "MonstercatMedia", "UKFdubstep", "DropThatBassline", "Dubstep", "VitalDubstep", "AirwaveDubstepTV", "EpicNetworkMusic", "NoOffenseDubstep", "InspectorDubplate", "ReptileDubstep", "MrMoMDubstep", "FrixionNetwork", "IcyDubstep", "DubstepWeed", "VhileMusic", "LessThan3Dubstep", "PleaseMindTheDUBstep", "ClownDubstep", "TheULTRADUBSTEP", "DuBM0nkeyz", "DubNationUK", "TehDubstepChannel", "BassDropMedia", "USdubstep", "UNITEDubstep"];
+    newSongsCommand.prototype.channels = ["Reggae"];
 
-    newSongsCommand.prototype.artists = ["Skrillex", "Doctor P", "Excision", "Flux Pavilion", "Knife Party", "Krewella", "Rusko", "Bassnectar", "Nero", "Deadmau5", "Borgore", "Zomboy"];
+    newSongsCommand.prototype.artists = ["Chronixx", "Busy Signal", "Vybz", "Reggae"];
 
     return newSongsCommand;
 
@@ -620,7 +620,7 @@
 
     whyWootCommand.prototype.functionality = function () {
       var msg, nameIndex;
-      msg = "We dislike AFK djs. We calculate your AFK status by checking the last time you     Woot'd or spoke. If you don't woot, I'll automagically remove you. Use our AutoWoot     script to avoid being removed: http://bit.ly/McZdWw";
+      msg = "Pszzzzzt, yuh AFK? If you don't woot, yuh gone. Use our AutoWoot provided by: x.co/plugxx";
       if ((nameIndex = this.msgData.message.indexOf('@')) !== -1) {
         return API.sendChat(this.msgData.message.substr(nameIndex) + ', ' + msg);
       } else {
@@ -700,8 +700,8 @@
     roomHelpCommand.prototype.functionality = function () {
       var msg1, msg2;
       msg1 = "Welcome to Reggae For All! ";
-      msg1 += "Click the 'Join Waitlist' button and wait your turn to play music. Most electronic music allowed, type '!theme' for specifics. ";
-      msg2 = "Stay active while waiting to play your song or I'll remove you. Play good quality music that hasn't been played recently (check room history).  ";
+      msg1 += "Click the 'Join Waitlist' button and wait your turn to play music. Most reggae music allowed, type '!theme' for specifics. ";
+      msg2 = "Stay active while waiting to play your song or a I'll remove you. Play good quality music that hasn't been played recently (check room history).";
       API.sendChat(msg1);
       return setTimeout((function () {
         return API.sendChat(msg2);
@@ -728,7 +728,7 @@
 
     sourceCommand.prototype.functionality = function () {
       var msg;
-      msg = 'Ported from source by Backus - modified by webdevbrian';
+      msg = 'Ported from source by Backus - modified by webdevbrian and flanka_mon';
       return API.sendChat(msg);
     };
 
@@ -752,7 +752,7 @@
 
     wootCommand.prototype.functionality = function () {
       var msg, nameIndex;
-      msg = "Please WOOT on DJ Booth and support your fellow DJs! AutoWoot: bit.ly/Lwcis0";
+      msg = "Please WOOT on DJ Booth and support your fellow DJs! AutoWoot: x.co/rfaext and x.co/plugxx";
       if ((nameIndex = this.msgData.message.indexOf('@')) !== -1) {
         return API.sendChat(this.msgData.message.substr(nameIndex) + ', ' + msg);
       } else {
@@ -1164,7 +1164,7 @@
     };
 
     overplayedCommand.prototype.functionality = function () {
-      return API.sendChat("View the list of songs we consider overplayed and suggest additions at http://den.johnback.us/overplayed_tracks");
+      return API.sendChat("View the list of songs we consider overplayed and suggest additions at http://reggaeforall.com");
     };
 
     return overplayedCommand;
@@ -1187,7 +1187,7 @@
 
     uservoiceCommand.prototype.functionality = function () {
       var msg;
-      msg = 'Have an idea for the room, our bot, or an event?  Awesome! Submit it to our uservoice and we\'ll get started on it: http://is.gd/IzP4bA';
+      msg = 'Have an idea for the room, our bot, or an event?  Awesome! Submit it to our uservoice and we\'ll get started on it: http://reggaeforall.com';
       msg += ' (please don\'t ask for mod)';
       return API.sendChat(msg);
     };
@@ -1207,7 +1207,7 @@
     skipCommand.prototype.init = function () {
       this.command = '!skip';
       this.parseType = 'exact';
-      return this.rankPrivelege = 'mod';
+      return this.rankPrivelege = 'bouncer';
     };
 
     skipCommand.prototype.functionality = function () {
@@ -1262,10 +1262,10 @@
       allowedUserLevels = [];
       user = API.getUser(this.msgData.fromID);
       window.capturedUser = user;
-      if (user.permission > 5) {
+      if (user.permission > 2) {
         allowedUserLevels = ['user', 'mod', 'host'];
-      } else if (user.permission > 2) {
-        allowedUserLevels = ['user', 'mod'];
+      } else if (user.permission > 1) {
+        allowedUserLevels = ['user', 'bouncer', 'mod'];
       } else {
         allowedUserLevels = ['user'];
       }
